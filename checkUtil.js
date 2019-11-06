@@ -1,49 +1,13 @@
-
-const ignoreWords = [
-  "a",
-  "an",
-  "and",
-  "as",
-  "at",
-  "but",
-  "by",
-  "en",
-  "for",
-  "if",
-  "in",
-  "nor",
-  "of",
-  "on",
-  "or",
-  "per",
-  "the",
-  "to",
-  "v.",
-  "vs.",
-  "via"
-];
-
-const numeric = [
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  ":",
-  ",",
-  "-"
-];
-
 const checkTitleCase = title => {
   const cleanedTitle = title.replace(/[\s-]+/g, " ");
-  const titleArray = cleanedTitle.split(/[ -]+/);
-  const filteredArray = titleArray.filter(word => !ignoreWords.includes(word));
-  for (titleWord of filteredArray) {
+  let titleArray = cleanedTitle.split(/[ -]+/);
+  const firstWord = titleArray[0];
+  if (firstWord[0] !== firstWord[0].toUpperCase()) {
+    return title;
+  } else {
+    titleArray = titleArray.filter(word => word !== titleArray[0]);
+  }
+  for (titleWord of titleArray) {
     if (!checkWord(titleWord)) {
       return title;
     }
@@ -56,20 +20,66 @@ const checkWord = word => {
   if (word === word.toUpperCase()) {
     return true;
   }
-  for (let i = 0; i < word.length; i++) {
-    if (word[0] !== word[0].toUpperCase()) {
-      return false;
-    }
-    if (i > 0) {
-      if (word[i] === word[i].toUpperCase() && !numeric.includes(word[i])) {
-        return false;
-      }
-    }
+  const firstLetter = word[0];
+  if (
+    (firstLetter === firstLetter.toLowerCase() && word.length > 4) ||
+    (firstLetter === firstLetter.toUpperCase() && word.length <= 4)
+  ) {
+    return false;
   }
   return true;
 };
 
+const correctWordTitleCase = word => {
+  if (word === word.toUpperCase()) {
+    return word;
+  }
+  const firstLetter = word[0];
+
+  let correctedWord = word;
+  if (firstLetter === firstLetter.toLowerCase() && word.length > 4) {
+    correctedWord = word.charAt(0).toUpperCase() + word.slice(1);
+  }
+  if (firstLetter === firstLetter.toUpperCase() && word.length <= 4) {
+    correctedWord = word.charAt(0).toLowerCase() + word.slice(1);
+  }
+  return correctedWord;
+}
+
+const correctWordSetenceCase = word => {
+  if (word === word.toUpperCase()) {
+    return word;
+  }
+  const correctedWord = word.charAt(0).toLowerCase() + word.slice(1);
+  return correctedWord;
+}
+
+const correctToTitleCase = title => {
+  const cleanedTitle = title.replace(/[\s-]+/g, " ");
+  let titleArray = cleanedTitle.split(/[ -]+/);
+
+  const firstWord = titleArray[0];
+  if (firstWord[0] !== firstWord[0].toUpperCase()) {
+    firstWord[0] = firstWord[0].toUpperCase();
+  }
+  return titleArray.map(word => correctWordTitleCase(word));
+};
+
+
+const correctToSentenceCase = title => {
+  const cleanedTitle = title.replace(/[\s-]+/g, " ");
+  let titleArray = cleanedTitle.split(/[ -]+/);
+
+  const firstWord = titleArray[0];
+  if (firstWord[0] !== firstWord[0].toUpperCase()) {
+    firstWord[0] = firstWord[0].toUpperCase();
+  }
+  return titleArray.map(word => correctWordSetenceCase(word));
+};
+
 module.exports = {
   checkTitleCase,
-  checkWord
+  checkWord,
+  correctToTitleCase,
+  correctToSentenceCase
 };

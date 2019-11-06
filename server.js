@@ -22,7 +22,10 @@ app.use((req, res, next) => {
 });
 
 app.get("/bibtex", (req, res) => {
-  res.send(bibtex.get(req.token));
+  const serverState = bibtex.get(req.token);
+  console.log(serverState);
+
+  res.send(serverState);
 });
 
 app.post("/bibtex", bodyParser.json(), (req, res) => {

@@ -1,28 +1,27 @@
-const parse = require('bibtex-parser')
-const checkUtil = require('./checkUtil')
+const parse = require("bibtex-parser");
+const checkUtil = require("./checkUtil");
 
+const parseBibTex = bibtex => (
+  Object.values(parse(bibtex)).map((entry, index) => {
+    entry["id"] = index;
+    return entry;
+  })
+);
 
-const parseBibTex = (bibtex) => {
-  let bibJson = parse(bibtex);
-
-  return checkTitle(bibJson);
-}
-
-const checkTitle = bibObject => {
-  const bibValues = Object.values(bibObject);
-  const foundTitleErrors = [];
-  for (const bib of bibValues) {
-    if (bib.TITLE) {
-      if (checkUtil.checkTitleCase(bib.TITLE) != null) {
-        foundTitleErrors.push(bib);
-      }
+const checkTitle = bibtexEntries => {
+  const capitalizationErrors = [];
+  for (const bibtexEntry of bibtexEntries) {
+    if (
+      bibtexEntry.TITLE &&
+      checkUtil.checkTitleCase(bibtexEntry.TITLE) != null
+    ) {
+      capitalizationErrors.push(bibtexEntry.id);
     }
   }
-
-  return foundTitleErrors;
+  return capitalizationErrors;
 };
 
-
 module.exports = {
-  parseBibTex
-}
+  parseBibTex,
+  checkTitle
+};
