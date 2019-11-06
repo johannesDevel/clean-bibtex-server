@@ -22,8 +22,8 @@ const checkWord = word => {
   }
   const firstLetter = word[0];
   if (
-    (firstLetter === firstLetter.toLowerCase() && word.length > 4) ||
-    (firstLetter === firstLetter.toUpperCase() && word.length <= 4)
+    (firstLetter === firstLetter.toLowerCase() && word.length >= 4) ||
+    (firstLetter === firstLetter.toUpperCase() && word.length < 4)
   ) {
     return false;
   }
@@ -37,10 +37,10 @@ const correctWordTitleCase = word => {
   const firstLetter = word[0];
 
   let correctedWord = word;
-  if (firstLetter === firstLetter.toLowerCase() && word.length > 4) {
+  if (firstLetter === firstLetter.toLowerCase() && word.length >= 4) {
     correctedWord = word.charAt(0).toUpperCase() + word.slice(1);
   }
-  if (firstLetter === firstLetter.toUpperCase() && word.length <= 4) {
+  if (firstLetter === firstLetter.toUpperCase() && word.length < 4) {
     correctedWord = word.charAt(0).toLowerCase() + word.slice(1);
   }
   return correctedWord;
