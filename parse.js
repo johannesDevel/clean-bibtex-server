@@ -20,7 +20,17 @@ const findCategories = bibtexEntries => {
         titleArray = titleArray.filter(word => word !== titleArray[0]);
         if (titleArray.every(word => checkUtil.checkTitleCaseWord(word))) {
           titleCase.push(bibtexEntry.id);
+        } else if (
+          titleArray.every(
+            word => word.charAt(0).toLowerCase() === word.charAt(0)
+          )
+        ) {
+          sentenceCase.push(bibtexEntry.id);
+        } else {
+          caseNotFound.push(bibtexEntry.id);
         }
+      } else {
+        caseNotFound.push(bibtexEntry.id);
       }
     }
   });

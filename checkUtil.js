@@ -1,19 +1,3 @@
-// const checkTitleCase = title => {
-//   const cleanedTitle = title.replace(/[\s-]+/g, " ");
-//   let titleArray = cleanedTitle.split(/[ -]+/);
-//   const firstWord = titleArray[0];
-//   if (firstWord[0] !== firstWord[0].toUpperCase()) {
-//     return false;
-//   } else {
-//     titleArray = titleArray.filter(word => word !== titleArray[0]);
-//   }
-//   for (titleWord of titleArray) {
-//     if (!checkWord(titleWord)) {
-//       return false;
-//     }
-//   }
-//   return true;
-// };
 
 const checkTitleCaseWord = word => {
   // ignore if whole word is Uppercase and most likely intentional uppercase
