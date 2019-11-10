@@ -1,27 +1,33 @@
 const parse = require("bibtex-parser");
 const checkUtil = require("./checkUtil");
 
-const parseBibTex = bibtex => (
+const parseBibTex = bibtex =>
   Object.values(parse(bibtex)).map((entry, index) => {
     entry["id"] = index;
     return entry;
-  })
-);
+  });
 
-const checkTitle = bibtexEntries => {
-  const capitalizationErrors = [];
-  for (const bibtexEntry of bibtexEntries) {
-    if (
-      bibtexEntry.TITLE &&
-      checkUtil.checkTitleCase(bibtexEntry.TITLE) != null
-    ) {
-      capitalizationErrors.push(bibtexEntry.id);
+const findCategories = bibtexEntries => {
+  const titleCase = [];
+  const sentenceCase = [];
+  const caseNotFound = [];
+  bibtexEntries.forEach(bibtexEntry => {
+    if (bibtexEntry.TITLE != null) {
+      const cleanedTitle = bibtexEntry.TITLE.replace(/[\s-]+/g, " ");
+      let titleArray = cleanedTitle.split(/[ -]+/);
+      const firstWord = titleArray[0];
+      if (firstWord[0] === firstWord[0].toUpperCase()) {
+        titleArray = titleArray.filter(word => word !== titleArray[0]);
+        if (titleArray.every(word => checkUtil.checkTitleCaseWord(word))) {
+          titleCase.push(bibtexEntry.id);
+        }
+      }
     }
-  }
-  return capitalizationErrors;
+  });
+  return { titleCase, sentenceCase, caseNotFound };
 };
 
 module.exports = {
   parseBibTex,
-  checkTitle
+  findCategories
 };

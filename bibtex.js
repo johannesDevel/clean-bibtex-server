@@ -6,10 +6,14 @@ const db = {};
 
 const defaultData = {
   entries: [],
-  errors: {
-    capitalization: [],
-    authorName: [],
-    mandatoryFields: []
+  categories: {
+    capitalization: {
+      titleCase: [],
+      sentenceCase: [],
+      caseNotFound: []
+    },
+    authorName: {},
+    mandatoryFields: {}
   },
   corrections: {
     capitalization: [],
@@ -29,33 +33,37 @@ const get = token => {
 
 const postText = (token, text) => {
   get(token).entries = [];
-  get(token).errors.capitalization = [];
+  get(token).categories.titleCase = [];
+  get(token).categories.sentenceCase = [];
+  get(token).categories.caseNotFound = [];
   get(token).corrections.capitalization = [];
   const parsedBibtex = parse.parseBibTex(text.bibtexText);
 
   get(token).entries = parsedBibtex;
-  const capitalizationErrors = parse.checkTitle(parsedBibtex);
-  get(token).errors.capitalization = capitalizationErrors;
+  get(token).categories.capitalization = parse.findCategories(parsedBibtex);
 
-  capitalizationErrors.forEach(id => {
-    const errorEntry = parsedBibtex.find(entry => entry.id === id);
-    if (errorEntry != null) {
+  parsedBibtex.forEach(entry => {
+    if (entry != null) {
       const correctedSum = get(token).corrections.capitalization.length;
       const correctedTitleCaseEntry = {
-        TITLE: checkUtil.correctToTitleCase(errorEntry.TITLE).join(' '),
+        TITLE: checkUtil.correctToTitleCase(entry.TITLE).join(" "),
         id: correctedSum,
-        entryId: errorEntry.id,
+        entryId: entry.id,
         correctionType: "TitleCase"
       };
       const correctedSentenceCaseEntry = {
-        TITLE: checkUtil.correctToSentenceCase(errorEntry.TITLE).join(' '),
+        TITLE: checkUtil.correctToSentenceCase(entry.TITLE).join(" "),
         id: correctedSum + 1,
-        entryId: errorEntry.id,
+        entryId: entry.id,
         correctionType: "SentencesCase"
       };
 
-      correctedTitleCaseEntry.TITLE = correctedTitleCaseEntry.TITLE.charAt(0).toUpperCase() + correctedTitleCaseEntry.TITLE.slice(1);
-      correctedSentenceCaseEntry.TITLE = correctedSentenceCaseEntry.TITLE.charAt(0).toUpperCase() + correctedSentenceCaseEntry.TITLE.slice(1);
+      correctedTitleCaseEntry.TITLE =
+        correctedTitleCaseEntry.TITLE.charAt(0).toUpperCase() +
+        correctedTitleCaseEntry.TITLE.slice(1);
+      correctedSentenceCaseEntry.TITLE =
+        correctedSentenceCaseEntry.TITLE.charAt(0).toUpperCase() +
+        correctedSentenceCaseEntry.TITLE.slice(1);
       get(token).corrections.capitalization.push(correctedTitleCaseEntry);
       get(token).corrections.capitalization.push(correctedSentenceCaseEntry);
     }

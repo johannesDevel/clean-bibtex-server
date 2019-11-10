@@ -1,21 +1,21 @@
-const checkTitleCase = title => {
-  const cleanedTitle = title.replace(/[\s-]+/g, " ");
-  let titleArray = cleanedTitle.split(/[ -]+/);
-  const firstWord = titleArray[0];
-  if (firstWord[0] !== firstWord[0].toUpperCase()) {
-    return title;
-  } else {
-    titleArray = titleArray.filter(word => word !== titleArray[0]);
-  }
-  for (titleWord of titleArray) {
-    if (!checkWord(titleWord)) {
-      return title;
-    }
-  }
-  return null;
-};
+// const checkTitleCase = title => {
+//   const cleanedTitle = title.replace(/[\s-]+/g, " ");
+//   let titleArray = cleanedTitle.split(/[ -]+/);
+//   const firstWord = titleArray[0];
+//   if (firstWord[0] !== firstWord[0].toUpperCase()) {
+//     return false;
+//   } else {
+//     titleArray = titleArray.filter(word => word !== titleArray[0]);
+//   }
+//   for (titleWord of titleArray) {
+//     if (!checkWord(titleWord)) {
+//       return false;
+//     }
+//   }
+//   return true;
+// };
 
-const checkWord = word => {
+const checkTitleCaseWord = word => {
   // ignore if whole word is Uppercase and most likely intentional uppercase
   if (word === word.toUpperCase()) {
     return true;
@@ -44,7 +44,7 @@ const correctWordTitleCase = word => {
     correctedWord = word.charAt(0).toLowerCase() + word.slice(1);
   }
   return correctedWord;
-}
+};
 
 const correctWordSetenceCase = word => {
   if (word === word.toUpperCase()) {
@@ -52,7 +52,7 @@ const correctWordSetenceCase = word => {
   }
   const correctedWord = word.charAt(0).toLowerCase() + word.slice(1);
   return correctedWord;
-}
+};
 
 const correctToTitleCase = title => {
   const cleanedTitle = title.replace(/[\s-]+/g, " ");
@@ -64,7 +64,6 @@ const correctToTitleCase = title => {
   }
   return titleArray.map(word => correctWordTitleCase(word));
 };
-
 
 const correctToSentenceCase = title => {
   const cleanedTitle = title.replace(/[\s-]+/g, " ");
@@ -78,8 +77,7 @@ const correctToSentenceCase = title => {
 };
 
 module.exports = {
-  checkTitleCase,
-  checkWord,
+  checkTitleCaseWord,
   correctToTitleCase,
   correctToSentenceCase
 };
