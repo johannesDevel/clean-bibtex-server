@@ -1,8 +1,8 @@
-const parse = require("bibtex-parser");
+const parse = require('bibtex-parser');
 
 const parseBibTex = bibtex =>
   Object.values(parse(bibtex)).map((entry, index) => {
-    entry["id"] = index;
+    entry.id = index;
     return entry;
   });
 
@@ -11,7 +11,7 @@ const findCategories = bibtexEntries => {
   const sentenceCase = [];
   const caseNotFound = [];
   bibtexEntries.forEach(bibtexEntry => {
-    const cleanedTitle = bibtexEntry.TITLE.replace(/[\s-]+/g, " ");
+    const cleanedTitle = bibtexEntry.TITLE.replace(/[\s-]+/g, ' ');
     let titleArray = cleanedTitle.split(/[ -]+/);
     if (titleArray[0].charAt(0) === titleArray[0].charAt(0).toUpperCase()) {
       titleArray = titleArray.filter(word => word !== titleArray[0]);

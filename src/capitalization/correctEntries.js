@@ -1,6 +1,3 @@
-
-
-
 const correctWordTitleCase = word => {
   if (word === word.toUpperCase()) {
     return word;
@@ -26,8 +23,8 @@ const correctWordSetenceCase = word => {
 };
 
 const correctToTitleCase = title => {
-  const cleanedTitle = title.replace(/[\s-]+/g, " ");
-  let titleArray = cleanedTitle.split(/[ -]+/);
+  const cleanedTitle = title.replace(/[\s-]+/g, ' ');
+  const titleArray = cleanedTitle.split(/[ -]+/);
 
   const firstWord = titleArray[0];
   if (firstWord[0] !== firstWord[0].toUpperCase()) {
@@ -37,8 +34,8 @@ const correctToTitleCase = title => {
 };
 
 const correctToSentenceCase = title => {
-  const cleanedTitle = title.replace(/[\s-]+/g, " ");
-  let titleArray = cleanedTitle.split(/[ -]+/);
+  const cleanedTitle = title.replace(/[\s-]+/g, ' ');
+  const titleArray = cleanedTitle.split(/[ -]+/);
 
   const firstWord = titleArray[0];
   if (firstWord[0] !== firstWord[0].toUpperCase()) {

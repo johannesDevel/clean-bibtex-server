@@ -1,6 +1,6 @@
-const clone = require("clone");
-const checkEntries = require("./capitalization/checkEntries");
-const correctEntries = require("./capitalization/correctEntries");
+const clone = require('clone');
+const checkEntries = require('./capitalization/checkEntries');
+const correctEntries = require('./capitalization/correctEntries');
 
 const db = {};
 
@@ -46,16 +46,16 @@ const postText = (token, text) => {
     if (entry != null) {
       const correctedSum = get(token).corrections.capitalization.length;
       const correctedTitleCaseEntry = {
-        TITLE: correctEntries.correctToTitleCase(entry.TITLE).join(" "),
+        TITLE: correctEntries.correctToTitleCase(entry.TITLE).join(' '),
         id: correctedSum,
         entryId: entry.id,
-        correctionType: "TitleCase"
+        correctionType: 'TitleCase'
       };
       const correctedSentenceCaseEntry = {
-        TITLE: correctEntries.correctToSentenceCase(entry.TITLE).join(" "),
+        TITLE: correctEntries.correctToSentenceCase(entry.TITLE).join(' '),
         id: correctedSum + 1,
         entryId: entry.id,
-        correctionType: "SentencesCase"
+        correctionType: 'SentencesCase'
       };
 
       correctedTitleCaseEntry.TITLE =
