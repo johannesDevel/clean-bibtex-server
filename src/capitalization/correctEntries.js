@@ -1,18 +1,5 @@
 
-const checkTitleCaseWord = word => {
-  // ignore if whole word is Uppercase and most likely intentional uppercase
-  if (word === word.toUpperCase()) {
-    return true;
-  }
-  const firstLetter = word[0];
-  if (
-    (firstLetter === firstLetter.toLowerCase() && word.length >= 4) ||
-    (firstLetter === firstLetter.toUpperCase() && word.length < 4)
-  ) {
-    return false;
-  }
-  return true;
-};
+
 
 const correctWordTitleCase = word => {
   if (word === word.toUpperCase()) {
@@ -61,7 +48,6 @@ const correctToSentenceCase = title => {
 };
 
 module.exports = {
-  checkTitleCaseWord,
   correctToTitleCase,
   correctToSentenceCase
 };

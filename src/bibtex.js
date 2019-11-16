@@ -1,6 +1,6 @@
 const clone = require("clone");
-const parse = require("./parse");
-const checkUtil = require("./checkUtil");
+const checkEntries = require("./capitalization/checkEntries");
+const correctEntries = require("./capitalization/correctEntries");
 
 const db = {};
 
@@ -37,22 +37,22 @@ const postText = (token, text) => {
   get(token).categories.sentenceCase = [];
   get(token).categories.caseNotFound = [];
   get(token).corrections.capitalization = [];
-  const parsedBibtex = parse.parseBibTex(text.bibtexText);
+  const parsedBibtex = checkEntries.parseBibTex(text.bibtexText);
 
   get(token).entries = parsedBibtex;
-  get(token).categories.capitalization = parse.findCategories(parsedBibtex);
+  get(token).categories.capitalization = checkEntries.findCategories(parsedBibtex);
 
   parsedBibtex.forEach(entry => {
     if (entry != null) {
       const correctedSum = get(token).corrections.capitalization.length;
       const correctedTitleCaseEntry = {
-        TITLE: checkUtil.correctToTitleCase(entry.TITLE).join(" "),
+        TITLE: correctEntries.correctToTitleCase(entry.TITLE).join(" "),
         id: correctedSum,
         entryId: entry.id,
         correctionType: "TitleCase"
       };
       const correctedSentenceCaseEntry = {
-        TITLE: checkUtil.correctToSentenceCase(entry.TITLE).join(" "),
+        TITLE: correctEntries.correctToSentenceCase(entry.TITLE).join(" "),
         id: correctedSum + 1,
         entryId: entry.id,
         correctionType: "SentencesCase"
