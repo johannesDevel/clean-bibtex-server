@@ -5,6 +5,7 @@ const correctEntries = require('./capitalization/correctEntries');
 const db = {};
 
 const defaultData = {
+  originalEntries: [],
   entries: [],
   categories: {
     capitalization: {
@@ -31,15 +32,22 @@ const get = token => {
   return data;
 };
 
+const setData = (token, data) => {
+  get(token).entries = data.entries;
+  get(token).categories.capitalization = data.categories.capitalization;
+};
+
 const postText = (token, text) => {
+  get(token).originalEntries = [];
   get(token).entries = [];
-  get(token).categories.titleCase = [];
-  get(token).categories.sentenceCase = [];
-  get(token).categories.caseNotFound = [];
+  get(token).categories.capitalization.titleCase = [];
+  get(token).categories.capitalization.sentenceCase = [];
+  get(token).categories.capitalization.caseNotFound = [];
   get(token).corrections.capitalization = [];
   const parsedBibtex = checkEntries.parseBibTex(text.bibtexText);
 
   get(token).entries = parsedBibtex;
+  get(token).originalEntries = parsedBibtex;
   get(token).categories.capitalization = checkEntries.findCategories(parsedBibtex);
 
   parsedBibtex.forEach(entry => {
@@ -68,11 +76,10 @@ const postText = (token, text) => {
       get(token).corrections.capitalization.push(correctedSentenceCaseEntry);
     }
   });
-
-  return text;
 };
 
 module.exports = {
+  setData,
   get,
   postText
 };

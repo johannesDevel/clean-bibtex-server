@@ -29,13 +29,6 @@ const findCategories = bibtexEntries => {
   return { titleCase, sentenceCase, caseNotFound };
 };
 
-// const checkIfUpperCaseAfterColon = title => {
-//   if (title.includes(':')) {
-//     const indexOfWordAfterColon = title.indexOf(':') + 2;
-//     return (title[indexOfWordAfterColon] != null && title[indexOfWordAfterColon] !== title[indexOfWordAfterColon].toUpperCase());
-//   } else return true;
-// }
-
 const checkTitleCaseWord = word => {
   // ignore if whole word is Uppercase and most likely intentional uppercase
   if (word === word.toUpperCase()) {
@@ -45,7 +38,7 @@ const checkTitleCaseWord = word => {
   return !(
     (firstLetter === firstLetter.toLowerCase() && word.length >= 4) ||
     (firstLetter === firstLetter.toUpperCase() && word.length < 4)
-  )
+  );
 };
 
 const checkSentenceCaseWord = word => {

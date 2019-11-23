@@ -21,17 +21,30 @@ app.use((req, res, next) => {
   }
 });
 
+app.post('/update', bodyParser.json(), (req, res) => {
+  const entries = req.body.entries;
+  const categories = req.body.categories;
+
+  if (entries && categories) {
+    bibtex.setData(req.token, req.body);
+    res.status(200);
+  } else {
+    res.status(403).send({
+      error: 'Wrong data'
+    });
+  }
+});
+
 app.get('/bibtex', (req, res) => {
   const serverState = bibtex.get(req.token);
-  console.log(serverState);
-
   res.send(serverState);
 });
 
 app.post('/bibtex', bodyParser.json(), (req, res) => {
   const bibtexText = req.body.bibtexText;
   if (bibtexText) {
-    res.send(bibtex.postText(req.token, req.body));
+    bibtex.postText(req.token, req.body);
+    res.send({});
   } else {
     res.status(403).send({
       error: 'Wrong data'
