@@ -2,6 +2,6 @@
 
 In the project directory, to start the server run:
 
-### `node server.js`
+### `node src/server.js`
 
 There are two bibTex files (bibliography.bib and bibliography2.bib) to test the app.
