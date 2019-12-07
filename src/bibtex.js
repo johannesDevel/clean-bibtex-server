@@ -1,25 +1,13 @@
-const clone = require('clone');
-const checkEntries = require('./capitalization/checkEntries');
-const correctEntries = require('./capitalization/correctEntries');
-const checkMandatoryFields = require('./mandatoryFields/checkMandortyFields');
+const clone = require("clone");
+const parse = require("bibtex-parser");
+const checkEntries = require("./capitalization/checkEntries");
+const correctEntries = require("./capitalization/correctEntries");
+const checkMandatoryFields = require("./mandatoryFields/checkMandortyFields");
 
 const db = {};
 
 const defaultData = {
-  originalEntries: [],
-  entries: [],
-  categories: {
-    capitalization: {
-      titleCase: [],
-      sentenceCase: [],
-      caseNotFound: []
-    },
-    authorName: {}
-  },
-  corrections: {
-    capitalization: [],
-    authorName: []
-  }
+  entries: []
 };
 
 const get = token => {
@@ -33,58 +21,34 @@ const get = token => {
 
 const setData = (token, data) => {
   get(token).entries = data.entries;
-  get(token).categories.capitalization = data.categories.capitalization;
 };
 
 const postText = (token, text) => {
-  clearData(token);
-  const parsedBibtex = checkEntries.parseBibTex(text.bibtexText);
-
-  get(token).entries = parsedBibtex;
-  get(token).originalEntries = parsedBibtex;
-  get(token).categories.capitalization = checkEntries.findCategories(parsedBibtex);
-
-  get(token).entries.forEach(entry => {
-    setCorrectionPerEntry(token, entry);
-    // setMissingRequiredFields(token, entry);
-    entry.missingRequiredFields = checkMandatoryFields.getMissingFields(entry);
-  });
-  console.log(get(token).entries);
-};
-
-const clearData = (token) => {
-  get(token).originalEntries = [];
   get(token).entries = [];
-  get(token).categories.capitalization.titleCase = [];
-  get(token).categories.capitalization.sentenceCase = [];
-  get(token).categories.capitalization.caseNotFound = [];
-  get(token).corrections.capitalization = [];
+  get(token).entries = parseBibTex(text.bibtexText);
 };
 
-const setCorrectionPerEntry = (token, entry) => {
-  const correctedSum = get(token).corrections.capitalization.length;
-  const correctedTitleCaseEntry = {
-    TITLE: correctEntries.correctToTitleCase(entry.TITLE).join(' '),
-    id: correctedSum,
-    entryId: entry.id,
-    correctionType: 'TitleCase'
-  };
-  const correctedSentenceCaseEntry = {
-    TITLE: correctEntries.correctToSentenceCase(entry.TITLE).join(' '),
-    id: correctedSum + 1,
-    entryId: entry.id,
-    correctionType: 'SentencesCase'
-  };
-
-  correctedTitleCaseEntry.TITLE =
-    correctedTitleCaseEntry.TITLE.charAt(0).toUpperCase() +
-    correctedTitleCaseEntry.TITLE.slice(1);
-  correctedSentenceCaseEntry.TITLE =
-    correctedSentenceCaseEntry.TITLE.charAt(0).toUpperCase() +
-    correctedSentenceCaseEntry.TITLE.slice(1);
-  get(token).corrections.capitalization.push(correctedTitleCaseEntry);
-  get(token).corrections.capitalization.push(correctedSentenceCaseEntry);
-};
+const parseBibTex = bibtex =>
+  Object.values(parse(bibtex)).map((entry, index) => {
+    entry.id = index;
+    entry.capitalization = checkEntries.setCapitalization(entry);
+    let correctedTitleCase = correctEntries
+      .correctToTitleCase(entry.TITLE)
+      .join(" ");
+    correctedTitleCase =
+      correctedTitleCase.charAt(0).toUpperCase() + correctedTitleCase.slice(1);
+    entry.correctionTitleCase = correctedTitleCase;
+    let correctedSentenceCase = correctEntries
+      .correctToSentenceCase(entry.TITLE)
+      .join(" ");
+    correctedSentenceCase =
+      correctedSentenceCase.charAt(0).toUpperCase() +
+      correctedSentenceCase.slice(1);
+    entry.correctionSentenceCase = correctedSentenceCase;
+    entry.correctionNoCase = entry.TITLE;
+    entry.missingRequiredFields = checkMandatoryFields.getMissingFields(entry);
+    return entry;
+  });
 
 module.exports = {
   setData,

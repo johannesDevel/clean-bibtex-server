@@ -1,32 +1,19 @@
-const parse = require("bibtex-parser");
 
-const parseBibTex = bibtex =>
-  Object.values(parse(bibtex)).map((entry, index) => {
-    entry.id = index;
-    return entry;
-  });
-
-const findCategories = bibtexEntries => {
-  const titleCase = [];
-  const sentenceCase = [];
-  const caseNotFound = [];
-  bibtexEntries.forEach(bibtexEntry => {
-    const cleanedTitle = bibtexEntry.TITLE.replace(/[\s-]+/g, " ");
-    let titleArray = cleanedTitle.split(/[ -]+/);
-    if (titleArray[0].charAt(0) === titleArray[0].charAt(0).toUpperCase()) {
-      titleArray = titleArray.filter(word => word !== titleArray[0]);
-      if (titleArray.every(word => checkTitleCaseWord(word))) {
-        titleCase.push(bibtexEntry.id);
-      } else if (titleArray.every(word => checkSentenceCaseWord(word))) {
-        sentenceCase.push(bibtexEntry.id);
-      } else {
-        caseNotFound.push(bibtexEntry.id);
-      }
+const setCapitalization = bibtexEntry => {
+  const cleanedTitle = bibtexEntry.TITLE.replace(/[\s-]+/g, " ");
+  let titleArray = cleanedTitle.split(/[ -]+/);
+  if (titleArray[0].charAt(0) === titleArray[0].charAt(0).toUpperCase()) {
+    titleArray = titleArray.filter(word => word !== titleArray[0]);
+    if (titleArray.every(word => checkTitleCaseWord(word))) {
+      return "titleCase";
+    } else if (titleArray.every(word => checkSentenceCaseWord(word))) {
+      return "sentenceCase";
     } else {
-      caseNotFound.push(bibtexEntry.id);
+      return "caseNotFound";
     }
-  });
-  return { titleCase, sentenceCase, caseNotFound };
+  } else {
+    return "caseNotFound";
+  }
 };
 
 const checkTitleCaseWord = word => {
@@ -50,6 +37,5 @@ const checkSentenceCaseWord = word => {
 };
 
 module.exports = {
-  parseBibTex,
-  findCategories
+  setCapitalization
 };

@@ -23,9 +23,8 @@ app.use((req, res, next) => {
 
 app.post('/update', bodyParser.json(), (req, res) => {
   const entries = req.body.entries;
-  const categories = req.body.categories;
 
-  if (entries && categories) {
+  if (entries) {
     bibtex.setData(req.token, req.body);
     res.status(200);
   } else {

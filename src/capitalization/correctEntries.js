@@ -1,3 +1,4 @@
+
 const correctWordTitleCase = word => {
   if (word === word.toUpperCase()) {
     return word;
