@@ -1,5 +1,6 @@
 const clone = require("clone");
 const parse = require("bibtex-parser");
+const scholar = require("google-scholar");
 const checkEntries = require("./capitalization/checkEntries");
 const correctEntries = require("./capitalization/correctEntries");
 const checkMandatoryFields = require("./mandatoryFields/checkMandortyFields");
@@ -28,7 +29,7 @@ const postText = (token, text) => {
   get(token).entries = parseBibTex(text.bibtexText);
 };
 
-const parseBibTex = bibtex =>
+const parseBibTex = bibtex => (
   Object.values(parse(bibtex)).map((entry, index) => {
     entry.id = index;
     entry.capitalization = checkEntries.setCapitalization(entry);
@@ -48,7 +49,8 @@ const parseBibTex = bibtex =>
     entry.correctionNoCase = entry.TITLE;
     entry.missingRequiredFields = checkMandatoryFields.getMissingFields(entry);
     return entry;
-  });
+  })
+);
 
 module.exports = {
   setData,
