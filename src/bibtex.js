@@ -4,6 +4,7 @@ const scholar = require("google-scholar");
 const checkEntries = require("./capitalization/checkEntries");
 const correctEntries = require("./capitalization/correctEntries");
 const checkMandatoryFields = require("./mandatoryFields/checkMandortyFields");
+const checkAuthor = require('./author/checkAuthor');
 
 const db = {};
 
@@ -48,6 +49,7 @@ const parseBibTex = bibtex => (
     entry.correctionSentenceCase = correctedSentenceCase;
     entry.correctionNoCase = entry.TITLE;
     entry.missingRequiredFields = checkMandatoryFields.getMissingFields(entry);
+    entry.authorAbbreviation = checkAuthor.checkAbbreviation(entry);
     return entry;
   })
 );
