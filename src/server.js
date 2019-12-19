@@ -39,6 +39,10 @@ app.get('/bibtex', (req, res) => {
   res.send(serverState);
 });
 
+app.get('/correctedAuthor', (req, res) => {
+  res.send(bibtex.searchAuthor(req.token));
+});
+
 app.post('/bibtex', bodyParser.json(), (req, res) => {
   const bibtexText = req.body.bibtexText;
   if (bibtexText) {
