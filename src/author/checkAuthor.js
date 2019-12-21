@@ -3,23 +3,22 @@ const scholar = require("google-scholar");
 const splitAuthor = author =>
   author != null
     ? author
-        .split(" and ")
-        .filter(name => name.includes(","))
-        .map(name => {
-          const firstName = /, (.+)/.exec(name)[1];
-          const lastName = /^(.+),/.exec(name)[1];
-          // console.log(firstName + ' -- ' + lastName);
-          return {
-            firstName: firstName,
-            lastName: lastName
-          };
-        })
+      .split(" and ")
+      .filter(name => name.includes(","))
+      .map(name => {
+        const firstName = /, (.+)/.exec(name)[1];
+        return {
+          name: name,
+          suggestion: null,
+          abbreviated: checkAbbreviation(firstName),
+          misspelling: false
+        };
+      })
     : null;
 
-const checkAbbreviation = author =>
-  author != null
-    ? author.some(auhorName => /[A-Z]\./.test(auhorName.firstName))
-    : false;
+const checkAbbreviation = firstName => (
+  /^[A-Za-z]\./.test(firstName)
+);
 
 const getSuggestions = title => {
   scholar.search("Architecture").then(result => console.log(result));
@@ -46,15 +45,15 @@ const searchAuthor = entries => {
     }))
   );
 
-  abbreviationEntries.map(abbreviationEntry => {
-    const found = allEntries
-      .filter(
-        entry =>
-          entry.id !== abbreviationEntry.id && !entry.lastName.includes(".")
-      )
-      .some(entry => entry.lastName === abbreviationEntry.lastName);
-    console.log('last name found ' + found);
-  });
+  // abbreviationEntries.map(abbreviationEntry => {
+  //   const found = allEntries
+  //     .filter(
+  //       entry =>
+  //         entry.id !== abbreviationEntry.id && !entry.lastName.includes(".")
+  //     )
+  //     .some(entry => entry.lastName === abbreviationEntry.lastName);
+  //   console.log("last name found " + found);
+  // });
 
   // entries
   //   .filter(entry => entry.authorAbbreviation)

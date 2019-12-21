@@ -49,19 +49,13 @@ const parseBibTex = bibtex => (
     entry.correctionSentenceCase = correctedSentenceCase;
     entry.correctionNoCase = entry.TITLE;
     entry.missingRequiredFields = checkMandatoryFields.getMissingFields(entry);
-    entry.authorAbbreviation = checkAuthor.checkAbbreviation(entry.AUTHOR);
     return entry;
   })
 );
 
 const searchAuthor = token => {
   checkAuthor.searchAuthor(Object.values(get(token).entries));
-  // Object.values(get(token).entries)
-  //   .filter(entry => entry.authorAbbreviation)
-  //   .map(entry => (
-      
-  //   ))
-  };
+};
 
 module.exports = {
   setData,
