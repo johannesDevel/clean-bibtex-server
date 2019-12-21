@@ -5,70 +5,49 @@ const splitAuthor = author =>
     ? author
       .split(" and ")
       .filter(name => name.includes(","))
-      .map(name => {
-        const firstName = /, (.+)/.exec(name)[1];
-        return {
-          name: name,
-          suggestion: null,
-          abbreviated: checkAbbreviation(firstName),
-          misspelling: false
-        };
-      })
+      .map(name => ({
+        name: name,
+        abbreviated: checkAbbreviation(getFirstName(name)),
+        misspelling: false
+      }))
     : null;
 
-const checkAbbreviation = firstName => (
-  /^[A-Za-z]\./.test(firstName)
-);
+const checkAbbreviation = firstName => /^[A-Za-z]\./.test(firstName);
 
-const getSuggestions = title => {
-  scholar.search("Architecture").then(result => console.log(result));
+const searchAbbreviatedSuggestion = entries => {
+  entries
+    .filter(
+      entry =>
+        entry.AUTHOR != null && entry.AUTHOR.some(author => author.abbreviated)
+    )
+    .map(entry =>
+      entry.AUTHOR.filter(author => author != null && author.abbreviated).map(
+        author => {
+          author.suggestion = searchSuggestion(author.name, entries);
+          console.log(author);
+        }
+      )
+    );
 };
 
-const searchAuthor = entries => {
-  const abbreviationEntries = entries
-    .filter(entry => entry.authorAbbreviation)
+const searchSuggestion = (abbreviatedName, entries) =>
+  entries
+    .filter(entry => entry.AUTHOR != null)
     .flatMap(entry =>
-      entry.AUTHOR.filter(abbreviationEntry =>
-        abbreviationEntry.firstName.includes(".")
-      ).map(abbreviationEntry => ({
-        id: entry.id,
-        abbreviationFirstName: abbreviationEntry.firstName,
-        lastName: abbreviationEntry.lastName
-      }))
+      entry.AUTHOR.filter(
+        author =>
+          author != null &&
+          !author.abbreviated &&
+          getLastName(author.name) === getLastName(abbreviatedName)
+      ).map(foundAuthor => foundAuthor.name)
     );
 
-  const allEntries = entries.flatMap(entry =>
-    entry.AUTHOR.map(authorName => ({
-      id: entry.id,
-      firstName: authorName.firstName,
-      lastName: authorName.lastName
-    }))
-  );
+const getFirstName = name => /, (.+)/.exec(name)[1];
 
-  // abbreviationEntries.map(abbreviationEntry => {
-  //   const found = allEntries
-  //     .filter(
-  //       entry =>
-  //         entry.id !== abbreviationEntry.id && !entry.lastName.includes(".")
-  //     )
-  //     .some(entry => entry.lastName === abbreviationEntry.lastName);
-  //   console.log("last name found " + found);
-  // });
-
-  // entries
-  //   .filter(entry => entry.authorAbbreviation)
-  //   .map(abbreviationEntry =>
-  //     entries
-  //       .filter(entry => entry !== abbreviationEntry)
-  //       .map(entry => {
-  //         console.log(abbreviationEntry.AUTHOR);
-  //       })
-  //   );
-};
+const getLastName = name => /^(.+),/.exec(name)[1];
 
 module.exports = {
   checkAbbreviation,
-  getSuggestions,
   splitAuthor,
-  searchAuthor
+  searchAbbreviatedSuggestion
 };

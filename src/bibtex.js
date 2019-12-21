@@ -54,7 +54,7 @@ const parseBibTex = bibtex => (
 );
 
 const searchAuthor = token => {
-  checkAuthor.searchAuthor(Object.values(get(token).entries));
+  checkAuthor.searchAbbreviatedSuggestion(Object.values(get(token).entries));
 };
 
 module.exports = {
