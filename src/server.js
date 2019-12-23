@@ -40,7 +40,8 @@ app.get('/bibtex', (req, res) => {
 });
 
 app.get('/correctedAuthor', (req, res) => {
-  res.send(bibtex.searchAuthor(req.token));
+  bibtex.searchAuthor(req.token);
+  res.send(true);
 });
 
 app.post('/bibtex', bodyParser.json(), (req, res) => {

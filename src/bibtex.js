@@ -34,6 +34,7 @@ const parseBibTex = bibtex => (
     entry.id = index;
     entry.AUTHOR = checkAuthor.splitAuthor(entry.AUTHOR);
     entry.capitalization = checkEntries.setCapitalization(entry);
+    entry.initialCapitalization = entry.capitalization;
     let correctedTitleCase = correctEntries
       .correctToTitleCase(entry.TITLE)
       .join(" ");
@@ -47,7 +48,7 @@ const parseBibTex = bibtex => (
       correctedSentenceCase.charAt(0).toUpperCase() +
       correctedSentenceCase.slice(1);
     entry.correctionSentenceCase = correctedSentenceCase;
-    entry.correctionNoCase = entry.TITLE;
+    entry.correctionInitialCase = entry.TITLE;
     entry.missingRequiredFields = checkMandatoryFields.getMissingFields(entry);
     return entry;
   })
