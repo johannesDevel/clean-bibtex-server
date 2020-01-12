@@ -29,10 +29,10 @@ const postText = (token, text) => {
   get(token).entries = parseBibTex(text.bibtexText);
 };
 
-const parseBibTex = bibtex => (
-  Object.values(parse(bibtex)).map((entry, index) => {
+const parseBibTex = bibtex => {
+  const allEntries = Object.values(parse(bibtex)).map((entry, index, entries) => {
     entry.id = index;
-    entry.AUTHOR = checkAuthor.splitAuthor(entry.AUTHOR);
+    entry.AUTHOR = checkAuthor.splitAuthor(entry.AUTHOR, entries);
     entry.capitalization = checkEntries.setCapitalization(entry);
     entry.initialCapitalization = entry.capitalization;
     let correctedTitleCase = correctEntries
@@ -51,16 +51,13 @@ const parseBibTex = bibtex => (
     entry.correctionInitialCase = entry.TITLE;
     entry.missingRequiredFields = checkMandatoryFields.getMissingFields(entry);
     return entry;
-  })
-);
-
-const searchAuthor = token => {
-  checkAuthor.searchAbbreviatedSuggestion(Object.values(get(token).entries));
+  });
+  checkAuthor.searchAbbreviatedSuggestion(allEntries);
+  return allEntries;
 };
 
 module.exports = {
   setData,
   get,
-  postText,
-  searchAuthor
+  postText
 };

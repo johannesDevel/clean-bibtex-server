@@ -1,6 +1,4 @@
-const scholar = require("google-scholar");
-
-const splitAuthor = author =>
+const splitAuthor = (author, entries) =>
   author != null
     ? author
         .split(" and ")
