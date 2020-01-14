@@ -6,6 +6,7 @@ const splitAuthor = (author, entries) =>
         .map(name => ({
           name: name,
           abbreviated: checkAbbreviation(getFirstName(name)),
+          changedAbbreviation: false,
           misspelling: false
         }))
     : null;
