@@ -50,6 +50,7 @@ const parseBibTex = bibtex => {
     entry.correctionSentenceCase = correctedSentenceCase;
     entry.correctionInitialCase = entry.TITLE;
     entry.missingRequiredFields = checkMandatoryFields.getMissingFields(entry);
+    entry.correctedRequiredFields = [];
     return entry;
   });
   checkAuthor.searchAbbreviatedSuggestion(allEntries);
