@@ -43,7 +43,7 @@ app.post('/bibtex', bodyParser.json(), (req, res) => {
   const bibtexText = req.body.bibtexText;
   if (bibtexText) {
     bibtex.postText(req.token, req.body);
-    res.sendStatus(200);
+    res.send({});
   } else {
     res.status(403).send({
       error: 'Wrong data'

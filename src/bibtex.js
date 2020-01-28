@@ -54,6 +54,7 @@ const parseBibTex = bibtex => {
     return entry;
   });
   checkAuthor.searchAbbreviatedSuggestion(allEntries);
+  checkAuthor.searchDuplicatedAuthors(allEntries);
   return allEntries;
 };
 

@@ -41,6 +41,14 @@ const searchSuggestion = (abbreviatedName, entries) =>
       ).map(foundAuthor => foundAuthor.name)
     );
 
+const searchDuplicatedAuthors = entries => {
+  const allAuthors = entries.filter(
+    entry => entry.AUTHOR != null && entry.AUTHOR.length > 0
+  ).flatMap(entry => entry.AUTHOR.map(author => author));
+
+  console.log(allAuthors);
+};
+
 const compareFirstLetter = (name1, name2) =>
   name1 != null &&
   name2 != null &&
@@ -55,5 +63,6 @@ const getFirstLatter = name => /^([A-Z])/.exec(name)[1];
 module.exports = {
   checkAbbreviation,
   splitAuthor,
-  searchAbbreviatedSuggestion
+  searchAbbreviatedSuggestion,
+  searchDuplicatedAuthors
 };
