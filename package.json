@@ -2,21 +2,19 @@
   "name": "clean-bibtex-server",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "server": "nodeamon src/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bibtex-parser": "0.0.0",
     "body-parser": "^1.19.0",
-    "change-case": "^3.1.0",
     "clone": "^2.1.2",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "google-scholar": "^1.5.1",
-    "google-scholar-extended": "^1.0.1"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "eslint": "^6.7.2",
