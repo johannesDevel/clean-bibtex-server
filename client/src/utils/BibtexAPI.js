@@ -12,11 +12,11 @@ const headers = {
 };
 
 export const get = () =>
-  fetch(`/api/bibtex`, { headers })
+  fetch(`/bibtex`, { headers })
     .then(res => res.json());
 
 export const update = body =>
-  fetch(`/api/update`, {
+  fetch(`/update`, {
   method: "POST",
   headers: {
     ...headers,
@@ -26,7 +26,7 @@ export const update = body =>
 }).then(res => res);
 
 export const create = body =>
-  fetch(`/api/bibtex`, {
+  fetch(`/bibtex`, {
     method: "POST",
     headers: {
       ...headers,

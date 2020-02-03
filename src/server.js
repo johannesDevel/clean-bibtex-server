@@ -26,7 +26,7 @@ app.use((req, res, next) => {
   }
 });
 
-app.post('api/update', bodyParser.json(), (req, res) => {
+app.post('/update', bodyParser.json(), (req, res) => {
   const entries = req.body.entries;
 
   if (entries) {
@@ -39,12 +39,12 @@ app.post('api/update', bodyParser.json(), (req, res) => {
   }
 });
 
-app.get('api/bibtex', (req, res) => {
+app.get('/bibtex', (req, res) => {
   const serverState = bibtex.get(req.token);
   res.send(serverState);
 });
 
-app.post('api/bibtex', bodyParser.json(), (req, res) => {
+app.post('/bibtex', bodyParser.json(), (req, res) => {
   const bibtexText = req.body.bibtexText;
   if (bibtexText) {
     bibtex.postText(req.token, req.body);
