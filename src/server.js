@@ -3,10 +3,13 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const config = require('./config');
 const bibtex = require('./bibtex');
+const path = require('path');
 
 const app = express();
 
 app.use(cors());
+
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use((req, res, next) => {
   const token = req.get('Authorization');

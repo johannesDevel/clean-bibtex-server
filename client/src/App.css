@@ -1,0 +1,178 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu&display=swap");
+
+body {
+  font-family: "Ubuntu", sans-serif;
+}
+
+.App-header {
+  background-color: #a0b7d6;
+  height: 80px;
+  color: white;
+  display: flex;
+}
+
+.App-link {
+  color: white;
+  font-size: 43px;
+  margin: 15px;
+}
+
+.start-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.start {
+  background-color: #e7ebf4;
+  margin-top: 20px;
+  /* height: 200px; */
+  width: 90%;
+  border: 1px solid lightgrey;
+}
+
+.start-inputs {
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.start-input-field {
+  resize: none;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 1.2em;
+  flex-grow: 1;
+}
+
+.start-upload-button {
+  background-color: #3360d5;
+  margin-right: 20px;
+  font-size: 1.2em;
+  color: white;
+  flex-grow: 1;
+}
+
+.input-file {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.start-upload-button label {
+  display: block;
+  height: 100%;
+  text-align: center;
+}
+
+button {
+  margin-right: 20px;
+  font-size: 1.2em;
+  flex-grow: 1;
+}
+.btn-toggle-advanced {
+  background: rgb(194, 217, 247);
+}
+
+.start-help-text {
+  margin: 20px;
+  font-size: 1.1em;
+}
+
+.error-list-item {
+  padding: 20px;
+  margin: 20px;
+  background: white;
+}
+
+.error-list-item:hover {
+  background: rgb(194, 217, 247);
+}
+
+.download-button {
+  color: black;
+  background-color: #a0b7d6;
+  margin: 15px;
+  padding: 5px;
+}
+
+.tab-list {
+  border-bottom: 1px solid #ccc;
+  padding-left: 0;
+}
+
+.tab-list-item {
+  display: inline-block;
+  list-style: none;
+  margin-bottom: -1px;
+  padding: 0.5rem 0.75rem;
+}
+
+.tab-list-active {
+  background-color: white;
+  border: solid #ccc;
+  border-width: 1px 1px 0 1px;
+}
+
+.error-table {
+  border: 1;
+}
+
+td {
+  padding: 10px;
+}
+
+th {
+  background: rgb(194, 217, 247);
+}
+
+table {
+  margin-top: 15px;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 30px;
+  /* border: 2px solid lightgrey; */
+}
+
+.table-entry-green {
+  background-color: #e2fbd8;
+}
+
+.table-entry-blue {
+  background-color: rgb(194, 217, 247);
+}
+
+.table-entry-red {
+  background-color: #fbd8d8;
+}
+
+.table-entry-grey {
+  background-color: #e7ebf4
+}
+
+.corrections-table {
+  background: white;
+  padding: 10px;
+}
+
+.statistic {
+  margin: 15px;
+}
+
+@media all and (max-width: 700px) {
+  .start {
+    width: 100%;
+  }
+}
+
+@media all and (min-width: 1600px) {
+  .start {
+    width: 1000px;
+  }
+}
