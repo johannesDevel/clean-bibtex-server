@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
+    "server": "nodeamon src/server.js",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "",
