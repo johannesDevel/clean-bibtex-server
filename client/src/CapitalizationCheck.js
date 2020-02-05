@@ -95,18 +95,21 @@ class CapitalizationCheck extends Component {
           <div className="corrections-table">
             <button
               className="btn-select-all"
+              disabled={!optionsCheckboxes.some(option => option.checked)}
               onClick={() => this.changeSelected("titleCase")}
             >
               Set selected to title case
             </button>
             <button
               className="btn-select-all"
+              disabled={!optionsCheckboxes.some(option => option.checked)}
               onClick={() => this.changeSelected("sentenceCase")}
             >
               Set selected to sentence case
             </button>
             <button
               className="btn-select-all"
+              disabled={!optionsCheckboxes.some(option => option.checked)}
               onClick={() => this.changeSelected("initialCase")}
             >
               Set selected to initial case

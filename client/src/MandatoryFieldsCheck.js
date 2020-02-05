@@ -40,8 +40,8 @@ class MandatoryFieldsCheck extends Component {
     this.getCorrectedAttributeEntry(option) != null
       ? "table-entry-green"
       : option.suggestion.length > 0
-      ? "table-entry-blue"
-      : "table-entry-red";
+        ? "table-entry-blue"
+        : "table-entry-red";
 
   render() {
     return (
@@ -58,10 +58,14 @@ class MandatoryFieldsCheck extends Component {
         </div>
         {this.getMissingFieldsEntries() > 0 && (
           <div className="corrections-table">
-            <button onClick={() => this.props.changeFieldSuggestion()}>
+            <button
+              onClick={() => this.props.changeFieldSuggestion()}
+              disabled={!this.props.missingFieldsOptions.some(option => option.checked)}
+            >
               Search suggestion online
             </button>
             <button
+              disabled={!this.props.missingFieldsOptions.some(option => option.checked)}
               onClick={() => {
                 this.setState({ allSelected: false });
                 this.props.addMissingField();
@@ -73,7 +77,7 @@ class MandatoryFieldsCheck extends Component {
               <tbody>
                 <tr>
                   <th>
-                  <input
+                    <input
                       type="checkBox"
                       name="select-all-missing-fields-checkbox"
                       checked={this.state.allSelected}
@@ -91,7 +95,7 @@ class MandatoryFieldsCheck extends Component {
               {this.props.missingFieldsOptions.map(option => (
                 <tbody key={`${option.entryId}+${option.field}`}>
                   <tr>
-                  <td className={this.getTableClassName(option)}>
+                    <td className={this.getTableClassName(option)}>
                       <input
                         type="checkbox"
                         checked={option.checked}
@@ -109,8 +113,8 @@ class MandatoryFieldsCheck extends Component {
                     <td className={this.getTableClassName(option)}>
                       {option.suggestion.length > 0
                         ? option.suggestion.map(suggestionField => (
-                            <div key={suggestionField}>{suggestionField}</div>
-                          ))
+                          <div key={suggestionField}>{suggestionField}</div>
+                        ))
                         : "-"}
                     </td>
                     <td className={this.getTableClassName(option)}>

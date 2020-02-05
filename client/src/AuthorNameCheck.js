@@ -68,6 +68,7 @@ class AuthorNameCheck extends Component {
               onClick={() =>
                 this.setState({ allSelected: false }, this.searchSuggestions())
               }
+              disabled={!this.props.authorNameOptions.some(option => option.checked)}
             >
               Search author suggestion
             </button>
@@ -78,6 +79,7 @@ class AuthorNameCheck extends Component {
                   this.props.changeAuthorName()
                 )
               }
+              disabled={!this.props.authorNameOptions.some(option => option.checked)}
             >
               change author name to suggestion
             </button>
