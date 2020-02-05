@@ -91,6 +91,8 @@ class AuthorNameCheck extends Component {
                       checked={this.state.allSelected}
                       onChange={() => this.selectAll()}
                     />
+                  </th>
+                  <th>
                     Current Author Name
                   </th>
                   <th>Author Name Suggestion</th>
@@ -114,6 +116,14 @@ class AuthorNameCheck extends Component {
                           this.props.changeAuthorNameOption(author)
                         }
                       />
+                    </td>
+                    <td
+                      className={
+                        this.checkCorrectedAuthors(author)
+                          ? "table-entry-green"
+                          : "table-entry-red"
+                      }
+                    >
                       {author.author}
                     </td>
                     <td
@@ -121,8 +131,8 @@ class AuthorNameCheck extends Component {
                         this.checkCorrectedAuthors(author)
                           ? "table-entry-green"
                           : author.suggestion.length > 0
-                          ? "table-entry-blue"
-                          : "table-entry-red"
+                            ? "table-entry-blue"
+                            : "table-entry-red"
                       }
                     >
                       {author.suggestion != null && author.suggestion.length > 0

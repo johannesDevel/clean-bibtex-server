@@ -73,12 +73,14 @@ class MandatoryFieldsCheck extends Component {
               <tbody>
                 <tr>
                   <th>
-                    <input
+                  <input
                       type="checkBox"
                       name="select-all-missing-fields-checkbox"
                       checked={this.state.allSelected}
                       onChange={() => this.selectAll()}
                     />
+                  </th>
+                  <th>
                     Missing field name
                   </th>
                   <th>Added field</th>
@@ -89,7 +91,7 @@ class MandatoryFieldsCheck extends Component {
               {this.props.missingFieldsOptions.map(option => (
                 <tbody key={`${option.entryId}+${option.field}`}>
                   <tr>
-                    <td className={this.getTableClassName(option)}>
+                  <td className={this.getTableClassName(option)}>
                       <input
                         type="checkbox"
                         checked={option.checked}
@@ -97,6 +99,8 @@ class MandatoryFieldsCheck extends Component {
                           this.props.changeMissingFieldsOption(option)
                         }
                       />
+                    </td>
+                    <td className={this.getTableClassName(option)}>
                       <span>{option.field}</span>
                     </td>
                     <td className={this.getTableClassName(option)}>

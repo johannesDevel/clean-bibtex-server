@@ -121,6 +121,8 @@ class CapitalizationCheck extends Component {
                       checked={this.state.allSelected}
                       onChange={() => this.selectAll()}
                     />
+                  </th>
+                  <th>
                     Current
                   </th>
                   <th>Title case</th>
@@ -135,8 +137,8 @@ class CapitalizationCheck extends Component {
                         entry.capitalization === "titleCase"
                           ? "table-entry-green"
                           : entry.capitalization === "sentenceCase"
-                          ? "table-entry-blue"
-                          : "table-entry-red"
+                            ? "table-entry-blue"
+                            : "table-entry-red"
                       }
                     >
                       <input
@@ -149,6 +151,16 @@ class CapitalizationCheck extends Component {
                         }
                         onChange={() => this.handleChangeOption(entry.id)}
                       />
+                    </td>
+                    <td
+                      className={
+                        entry.capitalization === "titleCase"
+                          ? "table-entry-green"
+                          : entry.capitalization === "sentenceCase"
+                            ? "table-entry-blue"
+                            : "table-entry-red"
+                      }
+                    >
                       {entry.TITLE}
                     </td>
                     <td className="table-entry-green">
