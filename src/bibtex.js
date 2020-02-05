@@ -3,7 +3,8 @@ const parse = require("bibtex-parser");
 const checkEntries = require("./capitalization/checkEntries");
 const correctEntries = require("./capitalization/correctEntries");
 const checkMandatoryFields = require("./mandatoryFields/checkMandortyFields");
-const checkAuthor = require('./author/checkAuthor');
+const checkAuthor = require("./author/checkAuthor");
+const createBibtex = require("./createBibtex");
 
 const db = {};
 
@@ -29,37 +30,58 @@ const postText = (token, text) => {
   get(token).entries = parseBibTex(text.bibtexText);
 };
 
+const getEntriesAsBibtexString = token => {
+  const data = db[token];
+  if (data != null) {
+    return createBibtex.createBibtexStringFromEntries(data.entries);
+  } else return null;
+};
+
 const parseBibTex = bibtex => {
-  const allEntries = Object.values(parse(bibtex)).map((entry, index, entries) => {
-    entry.id = index;
-    entry.AUTHOR = checkAuthor.splitAuthor(entry.AUTHOR, entries);
-    entry.capitalization = checkEntries.setCapitalization(entry);
-    entry.initialCapitalization = entry.capitalization;
+  const entries = parse(bibtex);
+  const allEntries = Object.keys(entries).map((entryKey, index, entryArray) => {
+    entries[entryKey].id = index;
+    entries[entryKey].ref = entryKey.toLowerCase();
+    entries[entryKey].AUTHOR = checkAuthor.splitAuthor(
+      entries[entryKey].AUTHOR,
+      entryArray
+    );
+    entries[entryKey].capitalization = checkEntries.setCapitalization(
+      entries[entryKey]
+    );
+    entries[entryKey].initialCapitalization = entries[entryKey].capitalization;
     let correctedTitleCase = correctEntries
-      .correctToTitleCase(entry.TITLE)
+      .correctToTitleCase(entries[entryKey].TITLE)
       .join(" ");
     correctedTitleCase =
       correctedTitleCase.charAt(0).toUpperCase() + correctedTitleCase.slice(1);
-    entry.correctionTitleCase = correctedTitleCase;
+    entries[entryKey].correctionTitleCase = correctedTitleCase;
     let correctedSentenceCase = correctEntries
-      .correctToSentenceCase(entry.TITLE)
+      .correctToSentenceCase(entries[entryKey].TITLE)
       .join(" ");
     correctedSentenceCase =
       correctedSentenceCase.charAt(0).toUpperCase() +
       correctedSentenceCase.slice(1);
-    entry.correctionSentenceCase = correctedSentenceCase;
-    entry.correctionInitialCase = entry.TITLE;
-    entry.missingRequiredFields = checkMandatoryFields.getMissingFields(entry);
-    entry.correctedRequiredFields = [];
-    return entry;
+    entries[entryKey].correctionSentenceCase = correctedSentenceCase;
+    entries[entryKey].correctionInitialCase = entries[entryKey].TITLE;
+    entries[
+      entryKey
+    ].missingRequiredFields = checkMandatoryFields.getMissingFields(
+      entries[entryKey]
+    );
+    entries[entryKey].correctedRequiredFields = [];
+    return entries[entryKey];
   });
   checkAuthor.searchAbbreviatedSuggestion(allEntries);
   checkAuthor.searchDuplicatedAuthors(allEntries);
+  createBibtex.createBibtexStringFromEntries(allEntries);
+
   return allEntries;
 };
 
 module.exports = {
   setData,
   get,
-  postText
+  postText,
+  getEntriesAsBibtexString
 };

@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hygull/bibtex": "^1.1.23",
     "bibtex-parser": "0.0.0",
     "body-parser": "^1.19.0",
     "clone": "^2.1.2",

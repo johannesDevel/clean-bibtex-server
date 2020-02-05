@@ -81,12 +81,6 @@ class AuthorNameCheck extends Component {
             >
               change author name to suggestion
             </button>
-            <button onClick={() => console.log(this.props.authorNameOptions)}>
-              show options
-            </button>
-            <button onClick={() => console.log(this.props.entries)}>
-              show Entries
-            </button>
             <table>
               <tbody>
                 <tr>

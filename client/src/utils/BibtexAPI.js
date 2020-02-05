@@ -35,6 +35,10 @@ export const create = body =>
     body: JSON.stringify(body)
   }).then(res => res.json());
 
+export const getChangedBibtex = () =>
+  fetch(`/changedBibtex`, {headers})
+    .then(res => res.json());
+
 export const searchAuthor = (title, author) =>
   fetch(`${crossrefApi}/works?query.bibliographic=${title}&query.author=${author}&rows=1`)
     .then(res => res.json());

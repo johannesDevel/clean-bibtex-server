@@ -7,7 +7,7 @@ const path = require('path');
 
 const app = express();
 
-// app.use(cors());
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -42,6 +42,13 @@ app.post('/update', bodyParser.json(), (req, res) => {
 app.get('/bibtex', (req, res) => {
   const serverState = bibtex.get(req.token);
   res.send(serverState);
+});
+
+app.get('/changedBibtex', (req, res) => {
+  const changedBibtex = bibtex.getEntriesAsBibtexString(req.token);
+  if (changedBibtex != null) {
+    res.send({ bibtex: changedBibtex });
+  } else res.status(403).send({ error: 'no data' });
 });
 
 app.post('/bibtex', bodyParser.json(), (req, res) => {
