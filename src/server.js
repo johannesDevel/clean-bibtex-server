@@ -63,9 +63,9 @@ app.post('/bibtex', bodyParser.json(), (req, res) => {
   }
 });
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build', 'index.html'));
-});
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../build', 'index.html'));
+// });
 
 app.listen(config.port, () => {
   console.log('Server listening on port %s, Ctrl+C to stop', config.port);

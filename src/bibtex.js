@@ -74,8 +74,6 @@ const parseBibTex = bibtex => {
   });
   checkAuthor.searchAbbreviatedSuggestion(allEntries);
   checkAuthor.searchDuplicatedAuthors(allEntries);
-  createBibtex.createBibtexStringFromEntries(allEntries);
-
   return allEntries;
 };
 
