@@ -42,10 +42,13 @@ const parseBibTex = bibtex => {
   const allEntries = Object.keys(entries).map((entryKey, index, entryArray) => {
     entries[entryKey].id = index;
     entries[entryKey].ref = entryKey.toLowerCase();
-    entries[entryKey].AUTHOR = checkAuthor.splitAuthor(
+    const author = checkAuthor.splitAuthor(
       entries[entryKey].AUTHOR,
       entryArray
     );
+    if (author != null) {
+      entries[entryKey].AUTHOR = author;
+    }
     entries[entryKey].capitalization = checkEntries.setCapitalization(
       entries[entryKey]
     );
@@ -70,6 +73,8 @@ const parseBibTex = bibtex => {
       entries[entryKey]
     );
     entries[entryKey].correctedRequiredFields = [];
+    entries[entryKey].mandatoryFieldsCheck = false;
+    entries[entryKey].mandatoryFieldsSuggestions = {};
     return entries[entryKey];
   });
   checkAuthor.searchAbbreviatedSuggestion(allEntries);
