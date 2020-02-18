@@ -3,7 +3,8 @@ const splitAuthor = (author, entries) =>
     ? author
         .split(" and ")
         .filter(name => name.includes(","))
-        .map(name => ({
+        .map((name, index) => ({
+          id: index,
           name: name,
           abbreviated: checkAbbreviation(getFirstName(name)),
           changedAbbreviation: false,

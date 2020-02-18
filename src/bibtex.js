@@ -52,6 +52,7 @@ const parseBibTex = bibtex => {
     entries[entryKey].capitalization = checkEntries.setCapitalization(
       entries[entryKey]
     );
+    entries[entryKey].TITLE = entries[entryKey].TITLE.replace(/[{}]+/g, "");
     entries[entryKey].initialCapitalization = entries[entryKey].capitalization;
     let correctedTitleCase = correctEntries
       .correctToTitleCase(entries[entryKey].TITLE)
@@ -75,6 +76,7 @@ const parseBibTex = bibtex => {
     entries[entryKey].correctedRequiredFields = [];
     entries[entryKey].mandatoryFieldsCheck = false;
     entries[entryKey].mandatoryFieldsSuggestions = {};
+    entries[entryKey].checkedSearched = false;
     return entries[entryKey];
   });
   checkAuthor.searchAbbreviatedSuggestion(allEntries);
