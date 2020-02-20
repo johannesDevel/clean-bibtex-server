@@ -14,6 +14,8 @@ const createBibtexStringFromEntries = entries => {
           });
         }
         result += "},\n";
+      } else if (entryKey === 'TITLE') {
+        result += `   ${entryKey.toLowerCase()}={{${entry[entryKey]}}},\n`;
       } else if (entryKey === entryKey.toUpperCase()) {
         result += `   ${entryKey.toLowerCase()}={${entry[entryKey]}},\n`;
       }
