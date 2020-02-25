@@ -10,7 +10,8 @@ const splitAuthor = (author, entries) =>
           changedAbbreviation: false,
           misspelling: false,
           changedMisspelling: false,
-          suggestion: []
+          suggestion: [],
+          onlineSuggestion: []
         }))
     : null;
 
@@ -19,8 +20,7 @@ const checkAbbreviation = firstName => /^[A-Za-z]\./.test(firstName);
 const searchAbbreviatedSuggestion = entries => {
   entries
     .filter(
-      entry =>
-        entry.AUTHOR != null && entry.AUTHOR.some(author => author.abbreviated)
+      entry => entry.AUTHOR != null && entry.AUTHOR.length > 0 && entry.AUTHOR.some(author => author != null && author.abbreviated)
     )
     .map(entry =>
       entry.AUTHOR.filter(author => author != null && author.abbreviated).map(
@@ -39,7 +39,9 @@ const searchSuggestion = (abbreviatedName, entries) =>
         author =>
           author != null &&
           !author.abbreviated &&
-          getLastName(author.name) === getLastName(abbreviatedName) &&
+          getLastName(abbreviatedName) != null &&
+          getLastName(author.name) != null &&
+          getLastName(author.name)[1] === getLastName(abbreviatedName)[1] &&
           compareFirstLetter(author.name, abbreviatedName)
       ).map(foundAuthor => foundAuthor.name)
     );
@@ -144,7 +146,7 @@ const compareFirstLetter = (name1, name2) =>
 
 const getFirstName = name => /, (.+)/.exec(name)[1];
 
-const getLastName = name => /^(.+),/.exec(name)[1];
+const getLastName = name => /^(.+),/.exec(name);
 
 const getFirstLatter = name => /^([A-Z])/.exec(name)[1];
 

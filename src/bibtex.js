@@ -27,7 +27,12 @@ const setData = (token, data) => {
 
 const postText = (token, text) => {
   get(token).entries = [];
-  get(token).entries = parseBibTex(text.bibtexText);
+  const entries = parse(text.bibtexText);
+  if (entries == null && entries.length <= 0) {
+    return false;
+  }
+  get(token).entries = parseBibTex(entries);
+  return true;
 };
 
 const getEntriesAsBibtexString = token => {
@@ -37,8 +42,7 @@ const getEntriesAsBibtexString = token => {
   } else return null;
 };
 
-const parseBibTex = bibtex => {
-  const entries = parse(bibtex);
+const parseBibTex = entries => {
   const allEntries = Object.keys(entries).map((entryKey, index, entryArray) => {
     entries[entryKey].id = index;
     entries[entryKey].ref = entryKey.toLowerCase();
