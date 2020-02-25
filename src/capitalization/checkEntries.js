@@ -1,8 +1,16 @@
-
 const setCapitalization = bibtexEntry => {
   const cleanedTitle = bibtexEntry.TITLE.replace(/[\s-]+/g, " ");
   let titleArray = cleanedTitle.split(/[ -]+/);
   if (titleArray[0].charAt(0) === titleArray[0].charAt(0).toUpperCase()) {
+    let wordsWithColon = titleArray.filter(title => title.includes(":"));
+    wordsWithColon = wordsWithColon
+      .filter(word => titleArray[titleArray.indexOf(word) + 1] != null)
+      .map(word => titleArray[titleArray.indexOf(word) + 1]);
+
+    titleArray = titleArray.filter(word => !wordsWithColon.includes(word));
+    if (wordsWithColon.some(word => word[0] === word[0].toLowerCase())) {
+      return "caseNotFound";
+    }
     titleArray = titleArray.filter(word => word !== titleArray[0]);
     if (titleArray.every(word => checkTitleCaseWord(word))) {
       return "titleCase";

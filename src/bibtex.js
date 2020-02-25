@@ -46,37 +46,20 @@ const parseBibTex = entries => {
   const allEntries = Object.keys(entries).map((entryKey, index, entryArray) => {
     entries[entryKey].id = index;
     entries[entryKey].ref = entryKey.toLowerCase();
-    const author = checkAuthor.splitAuthor(
-      entries[entryKey].AUTHOR,
-      entryArray
-    );
+    const author = checkAuthor.splitAuthor(entries[entryKey].AUTHOR, entryArray);
     if (author != null) {
       entries[entryKey].AUTHOR = author;
     }
-    entries[entryKey].capitalization = checkEntries.setCapitalization(
-      entries[entryKey]
-    );
+    entries[entryKey].capitalization = checkEntries.setCapitalization(entries[entryKey]);
     entries[entryKey].TITLE = entries[entryKey].TITLE.replace(/[{}]+/g, "");
     entries[entryKey].initialCapitalization = entries[entryKey].capitalization;
-    let correctedTitleCase = correctEntries
-      .correctToTitleCase(entries[entryKey].TITLE)
-      .join(" ");
-    correctedTitleCase =
-      correctedTitleCase.charAt(0).toUpperCase() + correctedTitleCase.slice(1);
-    entries[entryKey].correctionTitleCase = correctedTitleCase;
-    let correctedSentenceCase = correctEntries
-      .correctToSentenceCase(entries[entryKey].TITLE)
-      .join(" ");
-    correctedSentenceCase =
-      correctedSentenceCase.charAt(0).toUpperCase() +
-      correctedSentenceCase.slice(1);
-    entries[entryKey].correctionSentenceCase = correctedSentenceCase;
+    entries[entryKey].correctionTitleCase = correctEntries
+      .getCorrectedTitleCaseTitle(entries[entryKey].TITLE);
+    entries[entryKey].correctionSentenceCase = correctEntries
+      .getCorrectedSentenceCaseTitle(entries[entryKey].TITLE);
     entries[entryKey].correctionInitialCase = entries[entryKey].TITLE;
-    entries[
-      entryKey
-    ].missingRequiredFields = checkMandatoryFields.getMissingFields(
-      entries[entryKey]
-    );
+    entries[entryKey].missingRequiredFields = checkMandatoryFields
+      .getMissingFields(entries[entryKey]);
     entries[entryKey].correctedRequiredFields = [];
     entries[entryKey].mandatoryFieldsCheck = false;
     entries[entryKey].mandatoryFieldsSuggestions = {};
