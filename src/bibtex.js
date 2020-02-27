@@ -1,9 +1,8 @@
 const clone = require("clone");
 const parse = require("bibtex-parser");
-const checkEntries = require("./capitalization/checkEntries");
-const correctEntries = require("./capitalization/correctEntries");
-const checkMandatoryFields = require("./mandatoryFields/checkMandortyFields");
-const checkAuthor = require("./author/checkAuthor");
+const correctEntries = require("./correctEntries");
+const checkMandatoryFields = require("./checkMandortyFields");
+const checkAuthor = require("./checkAuthor");
 const createBibtex = require("./createBibtex");
 
 const db = {};
@@ -50,13 +49,17 @@ const parseBibTex = entries => {
     if (author != null) {
       entries[entryKey].AUTHOR = author;
     }
-    entries[entryKey].capitalization = checkEntries.setCapitalization(entries[entryKey]);
     entries[entryKey].TITLE = entries[entryKey].TITLE.replace(/[{}]+/g, "");
-    entries[entryKey].initialCapitalization = entries[entryKey].capitalization;
     entries[entryKey].correctionTitleCase = correctEntries
       .getCorrectedTitleCaseTitle(entries[entryKey].TITLE);
     entries[entryKey].correctionSentenceCase = correctEntries
       .getCorrectedSentenceCaseTitle(entries[entryKey].TITLE);
+    entries[entryKey].capitalization = entries[entryKey].TITLE === entries[entryKey].correctionTitleCase
+      ? 'titleCase'
+      : entries[entryKey].TITLE === entries[entryKey].correctionSentenceCase
+        ? 'sentenceCase'
+        : 'caseNotFound';
+    entries[entryKey].initialCapitalization = entries[entryKey].capitalization;
     entries[entryKey].correctionInitialCase = entries[entryKey].TITLE;
     entries[entryKey].missingRequiredFields = checkMandatoryFields
       .getMissingFields(entries[entryKey]);
