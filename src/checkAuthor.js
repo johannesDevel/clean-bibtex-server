@@ -6,7 +6,10 @@ const splitAuthor = (author, entries) =>
         .map((name, index) => ({
           id: index,
           name: name,
-          abbreviated: checkAbbreviation(getFirstName(name)),
+          abbreviated:
+            getFirstName(name) != null
+              ? checkAbbreviation(getFirstName(name)[1])
+              : false,
           changedAbbreviation: false,
           misspelling: false,
           changedMisspelling: false,
@@ -20,7 +23,10 @@ const checkAbbreviation = firstName => /^[A-Za-z]\./.test(firstName);
 const searchAbbreviatedSuggestion = entries => {
   entries
     .filter(
-      entry => entry.AUTHOR != null && entry.AUTHOR.length > 0 && entry.AUTHOR.some(author => author != null && author.abbreviated)
+      entry =>
+        entry.AUTHOR != null &&
+        entry.AUTHOR.length > 0 &&
+        entry.AUTHOR.some(author => author != null && author.abbreviated)
     )
     .map(entry =>
       entry.AUTHOR.filter(author => author != null && author.abbreviated).map(
@@ -142,13 +148,15 @@ const getEditDistance = (word1, word2) => {
 const compareFirstLetter = (name1, name2) =>
   name1 != null &&
   name2 != null &&
-  getFirstLatter(name1) === getFirstLatter(name2);
+  getFirstLatter(name1) != null &&
+  getFirstLatter(name2) != null &&
+  getFirstLatter(name1)[1] === getFirstLatter(name2)[1];
 
-const getFirstName = name => /, (.+)/.exec(name)[1];
+const getFirstName = name => /, (.+)/.exec(name);
 
 const getLastName = name => /^(.+),/.exec(name);
 
-const getFirstLatter = name => /^([A-Z])/.exec(name)[1];
+const getFirstLatter = name => /^([A-Z])/.exec(name);
 
 module.exports = {
   checkAbbreviation,
